@@ -33,7 +33,7 @@ export default class DogMemory extends React.Component {
         const highlight = this.shouldHighLightCorrectAnswer()
         return (
             <div>
-                <img src={question} />
+                <img className="dog-image" src={question} />
                 <div className={`answers highlight-${highlight}`}>
                     {
                         answers.map(this.renderAnswer)
