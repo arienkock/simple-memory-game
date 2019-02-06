@@ -32,13 +32,15 @@ export default class GameControls extends React.Component {
         switch (event.code) {
             case "KeyA":
                 this.handleAnswer(this.props.answers[0])
-                break;
+                break
             case "KeyS":
                 this.handleAnswer(this.props.answers[1])
-                break;
+                break
             case "KeyD":
                 this.handleAnswer(this.props.answers[2])
-                break;
+                break
+            default:
+                return
         }
     }
 
