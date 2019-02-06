@@ -1,25 +1,32 @@
 import React from 'react'
 import DogMemory from './DogMemory';
 import { connect } from 'react-redux';
-import { generateQuestion } from './data-source';
+import { generateQuestion } from './questions';
 
-class DogMemoryContainer extends React.Component {
-    submitAnswer = (answer) =>
-        this.props.dispatch({
-            type: "SUBMIT_ANSWER",
-            payload: answer
-        })
+const mapStateToProps = (state) => ({
+    controls: {
+        isAnswerSupplied: !!state.suppliedAnswer,
+        isAnswerCorrect: !!state.isSuppliedAnswerCorrect,
+        correctAnswer: state.currentChallenge.correctAnswer,
+        question: state.currentChallenge.question,
+        answers: state.currentChallenge.answers,
+        questionParams: state.difficultyLevel
+    }
+})
 
-    newQuestion = () =>
-        generateQuestion().then(q => this.props.dispatch({
-            type: "NEW_CHALLENGE",
-            payload: q
-        }))
+const mapDispatchToProps = (dispatch) => ({
+    controlsActions: {
+        submitAnswer: (answer) =>
+            dispatch({
+                type: "SUBMIT_ANSWER",
+                payload: answer
+            }),
+        newQuestion: (questionParams) =>
+            generateQuestion(questionParams).then(q => dispatch({
+                type: "NEW_CHALLENGE",
+                payload: q
+            }))
+    }
+})
 
-    render = () =>
-        <DogMemory {...this.props}
-            newQuestion={this.newQuestion}
-            submitAnswer={this.submitAnswer} />
-}
-
-export default connect(state => state)(DogMemoryContainer)
+export default connect(mapStateToProps, mapDispatchToProps)((props) => <DogMemory {...props} />)
